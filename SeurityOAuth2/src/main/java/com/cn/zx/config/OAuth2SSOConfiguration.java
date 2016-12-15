@@ -1,5 +1,6 @@
 package com.cn.zx.config;
 
+import com.cn.zx.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
@@ -64,6 +65,9 @@ public class OAuth2SSOConfiguration extends WebSecurityConfigurerAdapter{
     private AuthenticationProvider authenticationProvider;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     OAuth2ClientContext oauth2ClientContext;
 
     @RequestMapping({ "/user", "/me" })
@@ -112,6 +116,7 @@ public class OAuth2SSOConfiguration extends WebSecurityConfigurerAdapter{
 //        super.configure(auth);
 //        //设置采用自定义验证
         auth.authenticationProvider(authenticationProvider);
+        auth.userDetailsService(userService);
     }
 
 

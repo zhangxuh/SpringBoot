@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: oauth2-server
+  #数据库配置
+  datasource:
+    #数据库驱动名称
+    driver-class-name: com.mysql.jdbc.Driver
+    #数据库URL
+    url: jdbc:mysql://localhost:3306/zx?useUnicode=true&characterEncoding=utf8&useSSL=true&autoReconnect=true
+    #数据库用户名
+    username: root
+    #数据库用户对应的密码
+#    password:
+server:
+  port: 8001
+
+security:
+  oauth2:
+    client:
+      client-id: client
+      client-secret: secret
+      scope: read,write
+      auto-approve-scopes: '.*'
+      authorized-grant-types: authorization_code
+      access-token-uri: http://localhost:8001/oauth/token
+    resource:
+      tokenInfoUri: http://localhost:8001/oauth/token
+  user:
+    name: zhangsan
+    password: 123456
+
+github:
+  client:
+    clientId: 4cba44787cad65fac029
+    clientSecret: 2d13507179ae986f4fe49dceeb42a84901cce439
+    accessTokenUri: https://github.com/login/oauth/access_token
+    userAuthorizationUri: https://github.com/login/oauth/authorize
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://api.github.com/user
