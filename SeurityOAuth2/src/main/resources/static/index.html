@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Demo</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="_csrf_parameter" content="_csrf" />
+    <meta name="_csrf_header" content="X-CSRF-TOKEN" />
+    <meta name="_csrf" content="e62835df-f1a0-49ea-bce7-bf96f998119c" />
+    <base href="/" />
+    <link rel="stylesheet" type="text/css"
+          href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body ng-app="app" ng-controller="home as home">
+<div class="container" ng-show="!home.authenticated" style="width: 400px;align-content: center;margin: 0 auto">
+    <form class="form-signin" action="/login" method="post" id="loginForm">
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">登录</h1>
+            <!--<img src="http://apps.ycmedia.cn/qm/img/lable/120x80/00.png?ver=1" alt=""/>-->
+        </div>
+        <div class="login-wrap">
+            <input  name="username" type="text" class="form-control" placeholder="商户手机号" maxlength="11">
+            <input  name="password" type="text" placeholder="验证码" class="form-control"/>
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me"/> 记住我
+                <span class="pull-right">
+                    <a data-toggle="modal" href="#myModal"> 忘记密码?</a>
+                </span>
+            </label>
+            <button class="btn btn-lg btn-login btn-block" type="submit" value="登陆">
+            </button>
+        </div>
+    </form>
+    <div>
+        With Facebook: <a href="/login/facebook">click here</a>
+    </div>
+    <div>
+        With Github: <a href="/login/github">click here</a>
+    </div>
+</div>
+<div class="container" ng-show="home.authenticated">
+    Logged in as: <span ng-bind="home.user"></span>
+    <div>
+        <button ng-click="home.logout()" class="btn btn-primary">Logout</button>
+    </div>
+</div>
+<script type="text/javascript" src="/webjars/angularjs/angular.min.js"></script>
+<script type="text/javascript">
+    angular
+            .module("app", [])
+            .config(
+            function($httpProvider) {
+                $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+            }).controller("home", function($http, $location) {
+                var self = this;
+                $http.get("/user").success(function(data) {
+                    if (data.name) {
+                        self.user = data.name;
+                        self.authenticated = true;
+                    } else {
+                        self.user = "N/A";
+                        self.authenticated = false;
+                    }
+                }).error(function() {
+                    self.user = "N/A";
+                    self.authenticated = false;
+                });
+                self.logout = function() {
+                    $http.post('logout', {}).success(function() {
+                        self.authenticated = false;
+                        $location.path("/");
+                    }).error(function(data) {
+                        console.log("Logout failed")
+                        self.authenticated = false;
+                    });
+                };
+            });
+</script>
+</body>
+</html>
