@@ -1,1 +1,1 @@
-基于security和Oauth2.0完成登录授权和第三方授权
+基于security和Oauth2.0完成登录授权和第三方授权以及rememberMe功能
