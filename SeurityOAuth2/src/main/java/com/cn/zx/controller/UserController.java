@@ -26,4 +26,8 @@ public class UserController {
         logger.info(">>>>>>>>>>>>>>"+auths.get(0).getAuthority());
        return "redirect:/";
     }
+    @RequestMapping(value = "myError")
+    public String error(){
+        return "login.html";
+    }
 }
